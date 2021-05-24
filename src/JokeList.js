@@ -15,10 +15,10 @@ class JokeList extends Component {
             let res = await axios.get("https://icanhazdadjoke.com/", {
                 headers: {Accept: "application/json"}
     });
-    jokes.push(res.data.joke);
+    jokes.push(res.data.joke);//res.data.joke is the path to a joke from the api
     
     }
-    console.log(jokes);
+    this.setState({jokes: jokes});//will overwrite whatever is in the jokes array
 }
     render () {
         return (
