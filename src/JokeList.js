@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import './JokeList.css';
+import Joke from './Joke';
 
 class JokeList extends Component {
   static defaultProps = {
@@ -16,7 +17,7 @@ class JokeList extends Component {
       let res = await axios.get("https://icanhazdadjoke.com/", {
         headers: { Accept: "application/json" },
       });
-      jokes.push(res.data.joke); //res.data.joke is the path to a joke from the api
+      jokes.push({text: res.data.joke, votes: 0}); //res.data.joke is the path to a joke from the api
     }
     this.setState({ jokes: jokes }); //will overwrite whatever is in the jokes array
   }
@@ -34,7 +35,8 @@ class JokeList extends Component {
       
         <div className="JokeList-jokes">
           {this.state.jokes.map((j) => (
-            <div>{j}</div>
+            // <div>{j.text} - {j.votes}</div>
+            <Joke votes={j.votes} text={j.text} />
           ))}
         </div>
       </div>
