@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import './JokeList.css';
 import Joke from './Joke';
+import {v4 as uuidv4} from 'uuid';
 
 class JokeList extends Component {
   static defaultProps = {
@@ -17,9 +18,18 @@ class JokeList extends Component {
       let res = await axios.get("https://icanhazdadjoke.com/", {
         headers: { Accept: "application/json" },
       });
-      jokes.push({text: res.data.joke, votes: 0}); //res.data.joke is the path to a joke from the api
+      jokes.push({id: uuidv4(), text: res.data.joke, votes: 0}); //res.data.joke is the path to a joke from the api
     }
     this.setState({ jokes: jokes }); //will overwrite whatever is in the jokes array
+  }
+  handleVote(id, delta) {
+      this.setState(
+          st =>({//implicit return so parenthesis wraps arrow function
+              jokes: st.jokes.map(j =>
+                j.id === id ? {...j, votes: j.votes + delta} : j)
+          
+        }))
+
   }
   render() {
     return (
@@ -35,8 +45,14 @@ class JokeList extends Component {
       
         <div className="JokeList-jokes">
           {this.state.jokes.map((j) => (
-            // <div>{j.text} - {j.votes}</div>
-            <Joke votes={j.votes} text={j.text} />
+            // <div>{j.text} - {j.votes}</div> was mapping to a div
+            <Joke 
+                key={j.id} 
+                votes={j.votes} 
+                text={j.text} //changed to map from an instance of Joke
+                upvote={()=> this.handleVote(j.id, 1)}
+                downvote={()=> this.handleVote(j.id, -1)}
+            />
           ))}
         </div>
       </div>
