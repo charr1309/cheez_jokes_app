@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  height: 100vh;/*align-items, justify-content, and height center content in center of page*/
   font-family: "Rubik", sans-serif;
   color: #78909c;
   /* pulled linear gradient from a tool and
